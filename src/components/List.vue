@@ -12,6 +12,9 @@ export default {
   methods: {
     addTask() {
       this.tasks.push({ name: this.input });
+    },
+    removeTask(task) {
+      this.tasks.splice(task, 1);
     }
   }
 }
@@ -59,7 +62,7 @@ export default {
 
               <!-- Remove Button -->
               <v-col cols='2'>
-                <v-btn>remove</v-btn>
+                <v-btn @click="removeTask(i)">remove</v-btn>
               </v-col>
             </v-row>
 
