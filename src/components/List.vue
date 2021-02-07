@@ -11,20 +11,23 @@ export default {
   }),
   methods: {
     addTask() {
-      this.tasks.push({ name: this.input });
+      if (this.input.length) {
+        this.tasks.push({ name: this.input });
+        this.input = '';
+      }
     },
     removeTask(task) {
       this.tasks.splice(task, 1);
     },
     toggleCompleted(index) {
       let task = this.tasks[index];
-      if (task.completed) {
-        task.completed = !task.completed;
-      } else {
-        task.completed = true;
-      }
+      task.completed = !task.completed;
 
-      this.$set(this.tasks, index, task);
+      const updatedTasks = this.tasks.slice();
+      updatedTasks.splice(index, 1);
+      task.completed ? updatedTasks.push(task) : updatedTasks.unshift(task);
+
+      this.tasks = updatedTasks;
     }
   }
 }
@@ -32,7 +35,7 @@ export default {
 
 <template>
   <v-form>
-    <v-container>
+    <v-card max-width='80%' class='mx-auto mt-4 pa-8'>
       <v-row>
 
         <!-- Text Field -->
@@ -45,8 +48,8 @@ export default {
         </v-col>
 
         <!-- Add Button -->
-        <v-col cols='2'>
-          <v-btn @click='addTask'>Add Task</v-btn>
+        <v-col cols='2' class='text-center'>
+          <v-btn large color='info' @click='addTask'>Add Task</v-btn>
         </v-col>
 
       </v-row>
@@ -61,18 +64,18 @@ export default {
 
             <v-row class='task-row'>
               <!-- Task -->
-              <v-col cols='8'>
+              <v-col cols='10'>
                 <Task :complete='task.completed' :name='task.name' />
               </v-col>
 
               <!-- Complete Button -->
-              <v-col cols='2'>
-                <v-btn @click='toggleCompleted(i)'>complete</v-btn>
+              <v-col cols='1' class='text-center'>
+                <v-btn :color='task.completed ? "info" : ""' fab small @click='toggleCompleted(i)'><v-icon>mdi-check</v-icon></v-btn>
               </v-col>
 
               <!-- Remove Button -->
-              <v-col cols='2'>
-                <v-btn @click='removeTask(i)'>remove</v-btn>
+              <v-col cols='1' class='text-center'>
+                <v-btn color='error' fab small @click='removeTask(i)'><v-icon>mdi-close</v-icon></v-btn>
               </v-col>
             </v-row>
 
@@ -80,7 +83,7 @@ export default {
         </v-col>
 
       </v-row>
-    </v-container>
+    </v-card>
   </v-form>
 </template>
 

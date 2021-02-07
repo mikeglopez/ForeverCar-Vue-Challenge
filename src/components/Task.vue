@@ -3,8 +3,8 @@ export default {
   name: 'Task',
   props: [ 'name', 'complete' ],
   computed: {
-    getColor() {
-      return this.complete && '#4C6673';
+    getClass() {
+      return this.complete && 'text-decoration-line-through blue-grey--text text--lighten-3'
     }
   }
 }
@@ -12,7 +12,7 @@ export default {
 
 <template>
   <div class='task'>
-    <v-card class='task-card' :color='getColor'>{{ name }}</v-card>
+    <v-card class='task-card' :class='getClass'>{{ name }}</v-card>
   </div>
 </template>
 
