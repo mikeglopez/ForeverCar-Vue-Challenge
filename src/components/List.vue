@@ -1,10 +1,10 @@
 <script>
-// import Task from '@/components/Task'
+import Task from '@/components/Task'
 import data from '@/mock-api.js'
 
 export default {
   name: 'List',
-  components: {},
+  components: { Task },
   data: () => ({
     tasks: data.tasks,
     input: ''
@@ -47,7 +47,7 @@ export default {
             <v-row class='task-row'>
               <!-- Task -->
               <v-col cols='8'>
-                <Task />
+                <Task :name="task.name" />
               </v-col>
 
               <!-- Complete Button -->

@@ -7,7 +7,7 @@ export default {
 
 <template>
   <div class='task'>
-    <v-card class='task-card'>{{  }}</v-card>
+    <v-card class='task-card'>{{ name }}</v-card>
   </div>
 </template>
 
