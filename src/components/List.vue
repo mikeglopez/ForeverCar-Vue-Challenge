@@ -15,6 +15,16 @@ export default {
     },
     removeTask(task) {
       this.tasks.splice(task, 1);
+    },
+    toggleCompleted(index) {
+      let task = this.tasks[index];
+      if (task.completed) {
+        task.completed = !task.completed;
+      } else {
+        task.completed = true;
+      }
+
+      this.$set(this.tasks, index, task);
     }
   }
 }
@@ -36,7 +46,7 @@ export default {
 
         <!-- Add Button -->
         <v-col cols='2'>
-          <v-btn @click="addTask">Add Task</v-btn>
+          <v-btn @click='addTask'>Add Task</v-btn>
         </v-col>
 
       </v-row>
@@ -52,17 +62,17 @@ export default {
             <v-row class='task-row'>
               <!-- Task -->
               <v-col cols='8'>
-                <Task :name="task.name" />
+                <Task :complete='task.completed' :name='task.name' />
               </v-col>
 
               <!-- Complete Button -->
               <v-col cols='2'>
-                <v-btn>complete</v-btn>
+                <v-btn @click='toggleCompleted(i)'>complete</v-btn>
               </v-col>
 
               <!-- Remove Button -->
               <v-col cols='2'>
-                <v-btn @click="removeTask(i)">remove</v-btn>
+                <v-btn @click='removeTask(i)'>remove</v-btn>
               </v-col>
             </v-row>
 

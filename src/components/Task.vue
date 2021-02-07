@@ -1,13 +1,18 @@
 <script>
 export default {
   name: 'Task',
-  props: [ 'name' ]
+  props: [ 'name', 'complete' ],
+  computed: {
+    getColor() {
+      return this.complete && '#4C6673';
+    }
+  }
 }
 </script>
 
 <template>
   <div class='task'>
-    <v-card class='task-card'>{{ name }}</v-card>
+    <v-card class='task-card' :color='getColor'>{{ name }}</v-card>
   </div>
 </template>
 
