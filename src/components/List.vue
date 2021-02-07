@@ -6,28 +6,45 @@ export default {
   name: 'List',
   components: { Task },
   data: () => ({
-    tasks: data.tasks,
-    input: ''
+    allTasks: data.tasks,
+    input: '',
+    filter: false
   }),
   methods: {
     addTask() {
       if (this.input.length) {
-        this.tasks.push({ name: this.input });
+        this.allTasks.push({ name: this.input });
         this.input = '';
       }
     },
-    removeTask(task) {
-      this.tasks.splice(task, 1);
+    filterTasks() {
+      if (this.input.length) {
+        this.filter = !this.filter;
+      }
     },
-    toggleCompleted(index) {
-      let task = this.tasks[index];
+    removeTask(taskName) {
+      const index = this.allTasks.map((task) => task.name).indexOf(taskName)
+      this.allTasks.splice(index, 1);
+    },
+    toggleCompleted(taskName) {
+      const index = this.allTasks.map((task) => task.name).indexOf(taskName)
+      let task = this.allTasks[index];
       task.completed = !task.completed;
 
-      const updatedTasks = this.tasks.slice();
+      const updatedTasks = this.allTasks.slice();
       updatedTasks.splice(index, 1);
       task.completed ? updatedTasks.push(task) : updatedTasks.unshift(task);
 
-      this.tasks = updatedTasks;
+      this.allTasks = updatedTasks;
+    }
+  },
+  computed: {
+    displayedTasks() {
+      let tasksToDisplay = this.allTasks;
+      if (this.filter) {
+        tasksToDisplay = this.allTasks.filter(task => task.name.toLowerCase().includes(this.input.toLowerCase()));
+      }
+      return tasksToDisplay;
     }
   }
 }
@@ -39,7 +56,7 @@ export default {
       <v-row>
 
         <!-- Text Field -->
-        <v-col cols='10'>
+        <v-col cols='8'>
           <v-text-field
             v-model='input'
             label='New Task'
@@ -52,13 +69,18 @@ export default {
           <v-btn large color='info' @click='addTask'>Add Task</v-btn>
         </v-col>
 
+        <!-- Filter Button -->
+        <v-col cols='2' class='text-center'>
+          <v-btn large :color='this.filter ? "success" : "info"' @click='filterTasks'>Filter Tasks</v-btn>
+        </v-col>
+
       </v-row>
       <v-row>
 
         <!-- Task List -->
         <v-col cols='12'>
           <div
-            v-for='( task, i ) in tasks'
+            v-for='( task, i ) in this.displayedTasks'
             :key='i'
           >
 
@@ -70,12 +92,12 @@ export default {
 
               <!-- Complete Button -->
               <v-col cols='1' class='text-center'>
-                <v-btn :color='task.completed ? "info" : ""' fab small @click='toggleCompleted(i)'><v-icon>mdi-check</v-icon></v-btn>
+                <v-btn :color='task.completed ? "info" : ""' fab small @click='toggleCompleted(task.name)'><v-icon>mdi-check</v-icon></v-btn>
               </v-col>
 
               <!-- Remove Button -->
               <v-col cols='1' class='text-center'>
-                <v-btn color='error' fab small @click='removeTask(i)'><v-icon>mdi-close</v-icon></v-btn>
+                <v-btn color='error' fab small @click='removeTask(task.name)'><v-icon>mdi-close</v-icon></v-btn>
               </v-col>
             </v-row>
 
