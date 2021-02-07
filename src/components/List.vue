@@ -10,7 +10,9 @@ export default {
     input: ''
   }),
   methods: {
-
+    addTask() {
+      this.tasks.push({ name: this.input });
+    }
   }
 }
 </script>
@@ -31,7 +33,7 @@ export default {
 
         <!-- Add Button -->
         <v-col cols='2'>
-          <v-btn>Add Task</v-btn>
+          <v-btn @click="addTask">Add Task</v-btn>
         </v-col>
 
       </v-row>
