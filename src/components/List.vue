@@ -1,5 +1,5 @@
 <script>
-import Task from '@/components/Task'
+// import Task from '@/components/Task'
 import data from '@/mock-api.js'
 
 export default {
@@ -34,7 +34,7 @@ export default {
           <v-btn>Add Task</v-btn>
         </v-col>
 
-      <v-row>
+      </v-row>
       <v-row>
 
         <!-- Task List -->
